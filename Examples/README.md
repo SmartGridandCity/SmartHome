@@ -15,5 +15,5 @@ The figures presents the process for an appliance.
 ![](agnessil2.png)
 7. silkmeans presents the Silhouette after adjusting the data with KMEANS
 ![](silkmeans.png)
-8. diffAGNES-DIANA presents the difference between clusters of AGNES and DIANA
-![](diffAGNES-DIANA.png)
+8. DiffAGNES-DIANA presents the difference between clusters of AGNES and DIANA
+![](DiffAGNES-DIANA.png)
