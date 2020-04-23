@@ -17,7 +17,7 @@ library("purrr")
 fviz_nbclust(mydata, hcut, k.max = 50, method = "wss") +
   labs(subtitle = "Elbow method")
 #Find manually the best value(the elbow)
-nk2 <- 4
+nk2 <- 20
 
 ############################################ CLUSTER HCLUST
 #DIANA
@@ -145,16 +145,16 @@ sil3 <- silhouette(seqen$ncluster, d3)
 fviz_silhouette(sil3)
 
 #wss of clusters
-x.SS <- aggregate(seqen$slope, by=list(seqen$ncluster), function(x) sum(scale(x, scale=FALSE)^2))
-SS <- rowSums(x.SS[, -1]) # Sum of squares for each cluster
-xTSS <- sum(x.SS[, -1])  # Total (within) sum of squares
+x.SS <- aggregate(seqen$slope, by=list(seqen$nclustkmeans), function(x) sum(scale(x, scale=FALSE)^2))
+SS <- rowSums(x.SS) # Sum of squares for each cluster
+xTSS <- sum(x.SS)  # Total (within) sum of squares
 
 #rearrange the clusters with the new data&clusters
 cl <- kmeans(seqen$slope,nstart=25, max(rang$Group.1))
 seqen <- mutate(seqen, nclustkmeans=cl$cluster, meankmeans= NA)
 for(i in 1:nrow(seqen))
 {
-  seqen$meankmeans[i]=cl$centers[seqen$nclustkmeans]
+  seqen$meankmeans[i]<-cl$centers[seqen$nclustkmeans[i]]
 }
 d3 <- dist(seqen$slope, method = "euclidean")
 sil3 <- silhouette(seqen$nclustkmeans, d3)
@@ -170,3 +170,6 @@ for(i in 1:nrow(seqen))
   }
 }
 
+#mean wss and percent of the average element per cluster
+x.mn <- aggregate(seqen$slope, by=list(seqen$ncluster), function(x) c(mean(x), max(x), min(x)))
+x.mn
